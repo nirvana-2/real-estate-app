@@ -1,0 +1,39 @@
+# --- Dependencies ---
+node_modules/
+
+# --- Environment Variables (CRITICAL) ---
+# Contains your PostgreSQL connection string (DB_URL)
+.env
+.env.test
+.env.production
+
+# --- Prisma / Database ---
+# We ignore the generated client because it's built during 'npm install'
+/generated/prisma
+/prisma/migrations/*.sql
+# If you use SQLite for local testing:
+*.db
+*.db-journal
+
+# --- Build & Runtime ---
+dist/
+build/
+/out
+bin/
+obj/
+
+# --- Logs ---
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- Editor / OS ---
+.vscode/
+.idea/
+.DS_Store
+*.swp
