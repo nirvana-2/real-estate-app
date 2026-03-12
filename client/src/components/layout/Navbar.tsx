@@ -68,6 +68,7 @@ export default function Navbar() {
         {/* Main Navigation - Decluttered */}
         <nav className="hidden md:flex items-center gap-1">
           <NavItem to="/">Home</NavItem>
+          {user?.role !== "LANDLORD" && <NavItem to="/buy">Buy</NavItem>}
           <NavItem to="/rent">Rent</NavItem>
           <NavItem to="/new-homes">New homes</NavItem>
           <NavItem to="/find-agents">Find agents</NavItem>
