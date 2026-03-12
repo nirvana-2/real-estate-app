@@ -1,10 +1,9 @@
 // src/controllers/applicationController.ts
-import type { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
 
 // 1. Tenant: Submit an application for a property
-export const createApplication = async (req: AuthRequest, res: Response) => {
+export const createApplication = async (req: Request, res: Response) => {
   try {
     const { propertyId, message, moveInDate } = req.body;
 
@@ -25,7 +24,7 @@ export const createApplication = async (req: AuthRequest, res: Response) => {
 };
 
 // 2. Tenant: Get all own applications
-export const getMyApplications = async (req: AuthRequest, res: Response) => {
+export const getMyApplications = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -58,7 +57,7 @@ export const getMyApplications = async (req: AuthRequest, res: Response) => {
 };
 
 // 3. Landlord: Get applications for their properties
-export const getPropertyApplications = async (req: AuthRequest, res: Response) => {
+export const getPropertyApplications = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -92,7 +91,7 @@ export const getPropertyApplications = async (req: AuthRequest, res: Response) =
 };
 
 // 4. Admin: Get all applications
-export const getAllApplications = async (req: AuthRequest, res: Response) => {
+export const getAllApplications = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -123,7 +122,7 @@ export const getAllApplications = async (req: AuthRequest, res: Response) => {
 };
 
 // 5. Landlord/Admin: Update application status
-export const updateApplicationStatus = async (req: AuthRequest, res: Response) => {
+export const updateApplicationStatus = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status } = req.body;

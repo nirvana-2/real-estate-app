@@ -1,10 +1,10 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 // Get current user's profile
-export const getProfile = async (req: AuthRequest, res: Response) => {
+export const getProfile = async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
@@ -20,7 +20,7 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
 };
 
 // Update current user's profile
-export const updateProfile = async (req: AuthRequest, res: Response) => {
+export const updateProfile = async (req: Request, res: Response) => {
   try {
     const { name, email } = req.body;
     const user = await prisma.user.update({
@@ -34,7 +34,7 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
 };
 
 // Change password
-export const changePassword = async (req: AuthRequest, res: Response) => {
+export const changePassword = async (req: Request, res: Response) => {
   try {
     const { oldPassword, newPassword } = req.body;
     const user = await prisma.user.findUnique({ where: { id: req.user.id } });
@@ -57,7 +57,7 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
 };
 
 // Delete account
-export const deleteAccount = async (req: AuthRequest, res: Response) => {
+export const deleteAccount = async (req: Request, res: Response) => {
   try {
     await prisma.user.delete({ where: { id: req.user.id } });
     res.json({ message: "Account deleted successfully" });
@@ -67,7 +67,7 @@ export const deleteAccount = async (req: AuthRequest, res: Response) => {
 };
 
 // ✅ Get all public agents (no auth required)
-export const getAgents = async (req: AuthRequest, res: Response) => {
+export const getAgents = async (req: Request, res: Response) => {
   try {
     const { specialty } = req.query;
 
@@ -99,7 +99,7 @@ export const getAgents = async (req: AuthRequest, res: Response) => {
 };
 
 // ✅ Update agent profile (landlord only)
-export const updateAgentProfile = async (req: AuthRequest, res: Response) => {
+export const updateAgentProfile = async (req: Request, res: Response) => {
   try {
     if (req.user.role !== "LANDLORD") {
       return res.status(403).json({ message: "Only landlords can become agents" });

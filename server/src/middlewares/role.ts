@@ -1,9 +1,8 @@
-import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "./auth";
+import { Request, Response, NextFunction } from "express";
 import { Role } from "@prisma/client";
 
 export const authorize = (...roles: Role[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ message: "Not authenticated" })
     }

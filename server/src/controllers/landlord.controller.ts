@@ -1,9 +1,8 @@
-import type { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
 import type { Property } from "@prisma/client";
 //to add a new property
-export const addProperty = async (req: AuthRequest, res: Response) => {
+export const addProperty = async (req: Request, res: Response) => {
   try {
     const property: Property = await prisma.property.create({
       data: {
@@ -25,7 +24,7 @@ export const addProperty = async (req: AuthRequest, res: Response) => {
   }
 }
 //to get all property owned by landlord
-export const getMyProperties = async (req: AuthRequest, res: Response) => {
+export const getMyProperties = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 8;
@@ -54,7 +53,7 @@ export const getMyProperties = async (req: AuthRequest, res: Response) => {
   }
 };
 //update property
-export const updateProperty = async (req: AuthRequest, res: Response) => {
+export const updateProperty = async (req: Request, res: Response) => {
   try {
     const property = await prisma.property.update({
       where: { id: Number(req.params.id), landlordId: req.user.id },
@@ -67,7 +66,7 @@ export const updateProperty = async (req: AuthRequest, res: Response) => {
 };
 
 // Delete property
-export const deleteProperty = async (req: AuthRequest, res: Response) => {
+export const deleteProperty = async (req: Request, res: Response) => {
   try {
     await prisma.property.delete({
       where: { id: Number(req.params.id), landlordId: req.user.id },
@@ -79,7 +78,7 @@ export const deleteProperty = async (req: AuthRequest, res: Response) => {
 };
 
 // View applications for a property
-export const getApplicationsForProperty = async (req: AuthRequest, res: Response) => {
+export const getApplicationsForProperty = async (req: Request, res: Response) => {
   try {
     const applications = await prisma.application.findMany({
       where: { propertyId: Number(req.params.propertyId) },

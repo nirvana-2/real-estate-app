@@ -1,11 +1,9 @@
 // src/controllers/propertyController.ts
-import type { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
-import type { Request } from "express";
 
 // 1. Landlord: Create a property
-export const createProperty = async (req: AuthRequest, res: Response) => {
+export const createProperty = async (req: Request, res: Response) => {
   try {
     const {
       title,
@@ -52,7 +50,7 @@ export const createProperty = async (req: AuthRequest, res: Response) => {
 };
 
 // 2. Landlord: Update property
-export const updateProperty = async (req: AuthRequest, res: Response) => {
+export const updateProperty = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const {
@@ -97,7 +95,7 @@ export const updateProperty = async (req: AuthRequest, res: Response) => {
 };
 
 // 3. Landlord: Delete property
-export const deleteProperty = async (req: AuthRequest, res: Response) => {
+export const deleteProperty = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -112,7 +110,7 @@ export const deleteProperty = async (req: AuthRequest, res: Response) => {
 };
 
 // 4. Tenant: Browse all available properties
-export const getAllProperties = async (req: AuthRequest, res: Response) => {
+export const getAllProperties = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 8;
@@ -212,7 +210,7 @@ export const getPublicPropertyDetail = async (req: Request, res: Response) => {
 };
 
 // 5. Tenant: View single property detail
-export const getPropertyDetail = async (req: AuthRequest, res: Response) => {
+export const getPropertyDetail = async (req: Request, res: Response) => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: Number(req.params.id) },
@@ -227,7 +225,7 @@ export const getPropertyDetail = async (req: AuthRequest, res: Response) => {
 };
 
 // 6. Admin: View all properties (including unavailable)
-export const getAllPropertiesAdmin = async (req: AuthRequest, res: Response) => {
+export const getAllPropertiesAdmin = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 8;
@@ -257,7 +255,7 @@ export const getAllPropertiesAdmin = async (req: AuthRequest, res: Response) => 
 };
 
 // 7. Tenant: Apply and Book in a single transaction
-export const applyAndBook = async (req: AuthRequest, res: Response) => {
+export const applyAndBook = async (req: Request, res: Response) => {
   try {
     const { id: propertyId } = req.params;
     const { message, tourDate, moveInDate } = req.body;

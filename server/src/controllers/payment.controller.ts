@@ -1,10 +1,9 @@
 // src/controllers/paymentController.ts
-import type { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
 
 // 1. Tenant: Make a payment
-export const makePayment = async (req: AuthRequest, res: Response) => {
+export const makePayment = async (req: Request, res: Response) => {
   try {
     const { propertyId, amount, currency, paymentType } = req.body;
 
@@ -26,7 +25,7 @@ export const makePayment = async (req: AuthRequest, res: Response) => {
 };
 
 // 2. Tenant: View own payments
-export const getMyPayments = async (req: AuthRequest, res: Response) => {
+export const getMyPayments = async (req: Request, res: Response) => {
   try {
     const payments = await prisma.payment.findMany({
       where: { tenantId: req.user.id },
@@ -39,7 +38,7 @@ export const getMyPayments = async (req: AuthRequest, res: Response) => {
 };
 
 // 3. Landlord: View payments for their properties
-export const getPropertyPayments = async (req: AuthRequest, res: Response) => {
+export const getPropertyPayments = async (req: Request, res: Response) => {
   try {
     const payments = await prisma.payment.findMany({
       where: { property: { landlordId: req.user.id } },
@@ -55,7 +54,7 @@ export const getPropertyPayments = async (req: AuthRequest, res: Response) => {
 };
 
 // 4. Admin: View all payments
-export const getAllPayments = async (_req: AuthRequest, res: Response) => {
+export const getAllPayments = async (_req: Request, res: Response) => {
   try {
     const payments = await prisma.payment.findMany({
       include: {
@@ -71,7 +70,7 @@ export const getAllPayments = async (_req: AuthRequest, res: Response) => {
 };
 
 // 5. Admin: Update payment status (e.g., mark SUCCESS/FAILED)
-export const updatePaymentStatus = async (req: AuthRequest, res: Response) => {
+export const updatePaymentStatus = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status } = req.body;

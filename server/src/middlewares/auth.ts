@@ -7,12 +7,8 @@ interface CustomJwtPayload {
   id: number
 }
 
-export interface AuthRequest extends Request {
-  user: User  // ✅ use the full Prisma User type instead of custom object
-}
-
 export const protect = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

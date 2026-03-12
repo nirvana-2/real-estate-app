@@ -1,10 +1,9 @@
-// src/controllers/favoriteController.ts
-import type { Response } from "express";
+
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
 
 // 1. User (Tenant): Add property to favorites
-export const addFavorite = async (req: AuthRequest, res: Response) => {
+export const addFavorite = async (req: Request, res: Response) => {
   try {
     const { propertyId } = req.body;
 
@@ -34,7 +33,7 @@ export const addFavorite = async (req: AuthRequest, res: Response) => {
 };
 
 // 2. User (Tenant): Get all favorites
-export const getMyFavorites = async (req: AuthRequest, res: Response) => {
+export const getMyFavorites = async (req: Request, res: Response) => {
   try {
     const favorites = await prisma.favorite.findMany({
       where: { userId: req.user.id },
@@ -50,7 +49,7 @@ export const getMyFavorites = async (req: AuthRequest, res: Response) => {
 };
 
 // 3. User (Tenant): Remove property from favorites
-export const removeFavorite = async (req: AuthRequest, res: Response) => {
+export const removeFavorite = async (req: Request, res: Response) => {
   try {
     const { propertyId } = req.params;
 

@@ -1,38 +1,37 @@
-import type { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../utils/prisma";
-import type { AuthRequest } from "../middlewares/auth";
 // get all properties(marketplace view)
-export const getAllProperties=async(_req:AuthRequest,res:Response)=>{
+export const getAllProperties = async (_req: Request, res: Response) => {
     try {
-        const properties=await prisma.property.findMany({
-            where:{available:true},
-            include:{
-                landlord:{
-                    select:{name:true,email:true}
+        const properties = await prisma.property.findMany({
+            where: { available: true },
+            include: {
+                landlord: {
+                    select: { name: true, email: true }
                 }
             }
         })
-        res.json({properties})
-        
+        res.json({ properties })
+
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch properties" }); 
+        res.status(500).json({ message: "Failed to fetch properties" });
     }
 }
 //get single property detail
-export const getPropertyDetail=async(req:AuthRequest,res:Response)=>{
+export const getPropertyDetail = async (req: Request, res: Response) => {
     try {
-        const property=await prisma.property.findUnique({
-            where:{id:Number(req.params.id)},
-            include:{landlord:{select:{name:true}}}
+        const property = await prisma.property.findUnique({
+            where: { id: Number(req.params.id) },
+            include: { landlord: { select: { name: true } } }
         })
         if (!property) return res.status(404).json({ message: "Property not found" });
         res.json({ property });
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch property details" });  
+        res.status(500).json({ message: "Failed to fetch property details" });
     }
 }
 //get all application sent by tenants
-export const getMyApplications = async (req: AuthRequest, res: Response) => {
+export const getMyApplications = async (req: Request, res: Response) => {
     try {
         const applications = await prisma.application.findMany({
             where: { tenantId: req.user.id },
@@ -53,7 +52,7 @@ export const getMyApplications = async (req: AuthRequest, res: Response) => {
 }
 
 // Get tenant stats for dashboard
-export const getTenantStats = async (req: AuthRequest, res: Response) => {
+export const getTenantStats = async (req: Request, res: Response) => {
     try {
         const userId = req.user.id;
         const [applicationsSent, savedListings, activeMessages] = await Promise.all([
@@ -80,7 +79,7 @@ export const getTenantStats = async (req: AuthRequest, res: Response) => {
 };
 
 // Get recommended properties
-export const getRecommendations = async (req: AuthRequest, res: Response) => {
+export const getRecommendations = async (req: Request, res: Response) => {
     try {
         const userId = req.user.id;
         const limit = Number(req.query.limit) || 6;
@@ -110,7 +109,7 @@ export const getRecommendations = async (req: AuthRequest, res: Response) => {
 
 //get all bookings
 // 4. Get all bookings (viewings) scheduled by this tenant
-export const getMyBookings = async (req: AuthRequest, res: Response) => {
+export const getMyBookings = async (req: Request, res: Response) => {
     try {
         const bookings = await prisma.booking.findMany({
             where: { tenantId: req.user.id },
@@ -127,7 +126,7 @@ export const getMyBookings = async (req: AuthRequest, res: Response) => {
 };
 
 // 5. Get tenant's payment history
-export const getMyPayments = async (req: AuthRequest, res: Response) => {
+export const getMyPayments = async (req: Request, res: Response) => {
     try {
         const payments = await prisma.payment.findMany({
             where: { tenantId: req.user.id },
