@@ -6,7 +6,7 @@ import type { PropertyType, ListingType } from "../../auth-types/property.types"
 import { updateProperty } from "../../services/property.service";
 import { useProperties } from "../../hooks/useProperties";
 import { Tag, CreditCard } from "lucide-react";
-import { MapPicker } from "../../components/property/mapPicker"; 
+import { MapPicker } from "../../components/property/mapPicker";
 
 const EditPropertyPage = () => {
   const { id } = useParams();
@@ -27,8 +27,8 @@ const EditPropertyPage = () => {
     bedrooms: 0,
     bathrooms: 0,
     areaSqFt: 0,
-    latitude: null as number | null,   // ← added
-    longitude: null as number | null,  // ← added
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
   });
 
   const { properties } = useProperties();
@@ -45,18 +45,18 @@ const EditPropertyPage = () => {
       return;
     }
     setFormData({
-      title:        property.title,
-      description:  property.description,
-      price:        property.price,
-      location:     property.location,
-      available:    property.available,
+      title: property.title,
+      description: property.description,
+      price: property.price,
+      location: property.location,
+      available: property.available,
       propertyType: property.propertyType,
-      listingType:  property.listingType,
-      bedrooms:     property.bedrooms,
-      bathrooms:    property.bathrooms,
-      areaSqFt:     property.areaSqFt,
-      latitude:     property.latitude  ?? null,  // ← added
-      longitude:    property.longitude ?? null,  // ← added
+      listingType: property.listingType,
+      bedrooms: property.bedrooms,
+      bathrooms: property.bathrooms,
+      areaSqFt: property.areaSqFt,
+      latitude: property.latitude ?? undefined,
+      longitude: property.longitude ?? undefined,
     });
     setLoading(false);
     setError(null);
@@ -65,16 +65,16 @@ const EditPropertyPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!id) return;
-  
+
     setUpdating(true);
-  
+
     try {
       await updateProperty(Number(id), {
         ...formData,
         latitude: formData.latitude ?? undefined,
         longitude: formData.longitude ?? undefined,
       });
-  
+
       navigate("/landlord/properties");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -147,11 +147,10 @@ const EditPropertyPage = () => {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, listingType: "RENT" })}
-                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${
-                  formData.listingType === "RENT"
-                    ? "border-[#e51013] bg-red-50 text-[#e51013]"
-                    : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
-                }`}
+                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${formData.listingType === "RENT"
+                  ? "border-[#e51013] bg-red-50 text-[#e51013]"
+                  : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
+                  }`}
               >
                 <Tag className="w-5 h-5" />
                 <span className="font-bold text-sm">For Rent</span>
@@ -159,11 +158,10 @@ const EditPropertyPage = () => {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, listingType: "SALE" })}
-                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${
-                  formData.listingType === "SALE"
-                    ? "border-[#e51013] bg-red-50 text-[#e51013]"
-                    : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
-                }`}
+                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${formData.listingType === "SALE"
+                  ? "border-[#e51013] bg-red-50 text-[#e51013]"
+                  : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
+                  }`}
               >
                 <CreditCard className="w-5 h-5" />
                 <span className="font-bold text-sm">For Sale</span>
@@ -288,10 +286,10 @@ const EditPropertyPage = () => {
             </label>
             <div className="mt-2">
               <MapPicker
-                latitude={formData.latitude}
-                longitude={formData.longitude}
+                latitude={formData.latitude ?? undefined}
+                longitude={formData.longitude ?? undefined}
                 onChange={(lat, lng) =>
-                  setFormData({ ...formData, latitude: lat, longitude: lng })
+                  setFormData({ ...formData, latitude: lat ?? undefined, longitude: lng ?? undefined })
                 }
               />
             </div>

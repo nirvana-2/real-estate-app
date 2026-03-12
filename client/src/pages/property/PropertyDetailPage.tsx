@@ -4,7 +4,6 @@ import { useAuth } from "../../hooks/useAuth";
 import type { Property } from "../../auth-types/property.types";
 import { getPropertyDetail, getPublicPropertyDetail } from "../../services/property.service";
 import axios from "axios";
-import { BookingService } from "../../services/booking.service";
 import {
   MapPin,
   Bed,
@@ -39,7 +38,7 @@ const PropertyDetailPage: React.FC = () => {
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
-  
+
   // State for the date selected by the tenant
   const [tourDate, setTourDate] = useState("");
 
@@ -69,7 +68,7 @@ const PropertyDetailPage: React.FC = () => {
 
     // Ensure a tour date is picked before allowing submission
     if (!tourDate) return alert("Please select a preferred viewing date.");
-    
+
     setSubmitting(true);
     try {
       // Use the new atomic endpoint for both Application and Booking
@@ -141,11 +140,10 @@ const PropertyDetailPage: React.FC = () => {
             {user?.role === "TENANT" && (
               <button
                 onClick={() => toggleFavorite(property.id)}
-                className={`p-2.5 rounded-full shadow-lg border border-white/20 backdrop-blur-md transition-all ${
-                  active
+                className={`p-2.5 rounded-full shadow-lg border border-white/20 backdrop-blur-md transition-all ${active
                     ? "bg-[#e51013] text-white"
                     : "bg-white/90 text-slate-400 hover:text-[#e51013]"
-                }`}
+                  }`}
               >
                 <Heart className={`w-5 h-5 ${active ? "fill-current" : ""}`} />
               </button>
@@ -248,22 +246,20 @@ const PropertyDetailPage: React.FC = () => {
               <div className="flex border-b border-slate-100 bg-slate-50/50 p-2 gap-2">
                 <button
                   onClick={() => setActiveMapTab('location')}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${
-                    activeMapTab === 'location'
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${activeMapTab === 'location'
                       ? "bg-white text-[#e51013] shadow-sm ring-1 ring-slate-200"
                       : "text-slate-500 hover:bg-white/50"
-                  }`}
+                    }`}
                 >
                   <MapPin className="w-4 h-4" />
                   Explore in Map
                 </button>
                 <button
                   onClick={() => setActiveMapTab('amenities')}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${
-                    activeMapTab === 'amenities'
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${activeMapTab === 'amenities'
                       ? "bg-[#e51013] text-white shadow-lg"
                       : "text-slate-500 hover:bg-white/50"
-                  }`}
+                    }`}
                 >
                   <Navigation className="w-4 h-4" />
                   Nearby Amenities
@@ -355,7 +351,7 @@ const PropertyDetailPage: React.FC = () => {
                         required
                       />
                     </div>
-                    
+
                     <button
                       type="submit"
                       disabled={submitting || !property.available}

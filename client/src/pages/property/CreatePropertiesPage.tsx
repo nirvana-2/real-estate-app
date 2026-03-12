@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProperty, uploadPropertyImages } from "../../services/property.service";
-import type { Property, PropertyType, ListingType } from "../../auth-types/property.types";
+import type { PropertyType, ListingType } from "../../auth-types/property.types";
 import axios from "axios";
 import {
   Building2,
@@ -19,11 +19,21 @@ import {
   Tag
 } from "lucide-react";
 import { MapPicker } from "../../components/property/mapPicker";
-type PropertyFormData = Omit<Property, "latitude" | "longitude"|"images"> & {
-  latitude: number | null;
-  longitude: number | null;
-  images:string[];
-};
+interface PropertyFormData {
+  title: string;
+  description: string;
+  location: string;
+  price: number;
+  propertyType: PropertyType;
+  listingType: ListingType;
+  bedrooms: number;
+  bathrooms: number;
+  areaSqFt: number;
+  available: boolean;
+  images: string[];
+  latitude?: number;
+  longitude?: number;
+}
 
 const CreatePropertyPage: React.FC = () => {
   const navigate = useNavigate();
@@ -43,8 +53,8 @@ const CreatePropertyPage: React.FC = () => {
     areaSqFt: 0,
     available: true,
     images: [],
-    latitude: null,   // ← added
-    longitude: null,  // ← added
+    latitude: undefined,
+    longitude: undefined,
   });
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -98,6 +108,8 @@ const CreatePropertyPage: React.FC = () => {
       await createProperty({
         ...formData,
         images: uploadedImageUrls,
+        latitude: formData.latitude ?? undefined,
+        longitude: formData.longitude ?? undefined,
       });
 
       navigate("/landlord/dashboard");
@@ -191,11 +203,10 @@ const CreatePropertyPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, listingType: "RENT" })}
-                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${
-                  formData.listingType === "RENT"
-                    ? "border-[#e51013] bg-red-50 text-[#e51013]"
-                    : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
-                }`}
+                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${formData.listingType === "RENT"
+                  ? "border-[#e51013] bg-red-50 text-[#e51013]"
+                  : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
+                  }`}
               >
                 <Tag className="w-5 h-5" />
                 <span className="font-bold text-sm">For Rent</span>
@@ -203,11 +214,10 @@ const CreatePropertyPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, listingType: "SALE" })}
-                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${
-                  formData.listingType === "SALE"
-                    ? "border-[#e51013] bg-red-50 text-[#e51013]"
-                    : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
-                }`}
+                className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${formData.listingType === "SALE"
+                  ? "border-[#e51013] bg-red-50 text-[#e51013]"
+                  : "border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200"
+                  }`}
               >
                 <CreditCard className="w-5 h-5" />
                 <span className="font-bold text-sm">For Sale</span>
@@ -360,10 +370,10 @@ const CreatePropertyPage: React.FC = () => {
                 Pin Property Location on Map
               </label>
               <MapPicker
-                latitude={formData.latitude ?? null}
-                longitude={formData.longitude ?? null}
+                latitude={formData.latitude ?? undefined}
+                longitude={formData.longitude ?? undefined}
                 onChange={(lat, lng) =>
-                  setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }))
+                  setFormData((prev) => ({ ...prev, latitude: lat ?? undefined, longitude: lng ?? undefined }))
                 }
               />
             </div>

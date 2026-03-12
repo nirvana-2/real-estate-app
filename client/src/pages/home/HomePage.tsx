@@ -13,10 +13,7 @@ import { InvestmentHotspots } from "../../components/market/InvestmentHotspot";
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1600";
 
-function formatMoney(n: number) {
-  if (!Number.isFinite(n)) return "Rs. 0";
-  return "Rs. " + new Intl.NumberFormat("en-NP").format(n);
-}
+
 
 export default function HomePage() {
   const { user } = useAuth();

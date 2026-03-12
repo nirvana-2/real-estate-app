@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type{ AdvancedFilters, defaultAdvancedFilters } from '../../types/AdvancedFilters.types';
+import { type AdvancedFilters, defaultAdvancedFilters } from '../../types/AdvancedFilters.types';
 
 interface AdvancedFiltersModalProps {
     isOpen: boolean;

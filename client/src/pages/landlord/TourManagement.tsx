@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { BookingService } from "../../services/booking.service";
-import { 
-  Calendar, 
-  Clock, 
-  User, 
-  Home, 
-  CheckCircle, 
-  XCircle, 
+import {
+  Calendar,
+  Clock,
+  User,
+  Home,
+  CheckCircle,
+  XCircle,
   Loader2,
   MessageSquare,
   Search,
-  MoreVertical,
-  ChevronDown,
   Mail,
-  ExternalLink
 } from "lucide-react";
 import { format, isAfter, isBefore, startOfDay } from "date-fns";
 import { toast } from "react-hot-toast";
@@ -33,7 +30,7 @@ const TourManagement: React.FC = () => {
       // Ensure we access the array correctly based on your controller response
       setBookings(data.bookings || data);
     } catch (err) {
-        console.log(err)
+      console.log(err)
       toast.error("Failed to load tour requests");
     } finally {
       setLoading(false);
@@ -50,7 +47,7 @@ const TourManagement: React.FC = () => {
       toast.success(date ? "Tour rescheduled" : `Request ${status?.toLowerCase()}ed`);
       setReschedulingId(null);
       setNewDate("");
-      fetchBookings(); 
+      fetchBookings();
     } catch (err) {
       console.log(err)
       toast.error("Update failed");
@@ -58,21 +55,21 @@ const TourManagement: React.FC = () => {
   };
 
   const filteredBookings = bookings.filter((booking) => {
-    const matchesSearch = 
+    const matchesSearch =
       booking.property?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       booking.tenant?.name?.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     if (!matchesSearch) return false;
 
     if (activeTab === "All") return true;
-    
+
     const tourDate = new Date(booking.date);
     const today = startOfDay(new Date());
 
     if (activeTab === "Pending") return booking.status === "PENDING";
     if (activeTab === "Upcoming") return booking.status === "CONFIRMED" && isAfter(tourDate, today);
     if (activeTab === "Past") return booking.status === "CANCELLED" || (booking.status === "CONFIRMED" && isBefore(tourDate, today));
-    
+
     return true;
   });
 
@@ -103,17 +100,16 @@ const TourManagement: React.FC = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                activeTab === tab
+              className={`px-5 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${activeTab === tab
                   ? "bg-white text-slate-900 shadow-sm"
                   : "text-slate-500 hover:text-slate-700"
-              }`}
+                }`}
             >
               {tab}
             </button>
           ))}
         </div>
-        
+
         <div className="relative w-full lg:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -137,16 +133,16 @@ const TourManagement: React.FC = () => {
       ) : (
         <div className="grid gap-6">
           {filteredBookings.map((booking) => (
-            <div 
-              key={booking.id} 
+            <div
+              key={booking.id}
               className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm hover:shadow-lg hover:border-slate-300 transition-all flex flex-col md:flex-row items-center justify-between gap-6"
             >
               <div className="flex items-start gap-5 w-full">
                 {/* Property Thumbnail */}
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100 border border-slate-100">
                   {booking.property?.images?.[0] ? (
-                    <img 
-                      src={getImageUrl(booking.property.images[0])} 
+                    <img
+                      src={getImageUrl(booking.property.images[0])}
                       alt={booking.property.title}
                       className="w-full h-full object-cover"
                     />
@@ -156,17 +152,16 @@ const TourManagement: React.FC = () => {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <h3 className="font-bold text-slate-900 text-lg truncate">
                       {booking.property?.title}
                     </h3>
-                    <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border ${
-                      booking.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border-amber-200' :
-                      booking.status === 'CONFIRMED' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 
-                      'bg-red-50 text-red-600 border-red-200'
-                    }`}>
+                    <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border ${booking.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border-amber-200' :
+                        booking.status === 'CONFIRMED' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' :
+                          'bg-red-50 text-red-600 border-red-200'
+                      }`}>
                       {booking.status}
                     </span>
                   </div>
@@ -178,14 +173,14 @@ const TourManagement: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-slate-700">{booking.tenant?.name}</span>
-                        <a 
+                        <a
                           href={`mailto:${booking.tenant?.email}`}
                           className="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
                           title="Send Email"
                         >
                           <Mail className="w-3.5 h-3.5" />
                         </a>
-                        <button 
+                        <button
                           className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                           title="Send Message"
                         >
@@ -193,7 +188,7 @@ const TourManagement: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <div className="p-1.5 bg-slate-50 rounded-lg">
                         <Calendar className="w-4 h-4 text-rose-500" />
@@ -219,21 +214,21 @@ const TourManagement: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto border-t md:border-t-0 pt-4 md:pt-0">
                 {reschedulingId === booking.id ? (
                   <div className="flex flex-col gap-2 w-full sm:w-64">
-                    <input 
+                    <input
                       type="datetime-local"
                       value={newDate}
                       onChange={(e) => setNewDate(e.target.value)}
                       className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-emerald-500/20 outline-none"
                     />
                     <div className="flex gap-2">
-                      <button 
+                      <button
                         onClick={() => handleStatusUpdate(booking.id, undefined, newDate)}
                         disabled={!newDate}
                         className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-xl font-bold text-xs disabled:opacity-50"
                       >
                         Confirm
                       </button>
-                      <button 
+                      <button
                         onClick={() => setReschedulingId(null)}
                         className="flex-1 px-4 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold text-xs"
                       >

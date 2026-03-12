@@ -6,7 +6,6 @@ import {
   Search,
   AlertCircle,
   Building2,
-  User,
   Calendar,
   ChevronLeft,
   ChevronRight,
@@ -143,8 +142,8 @@ const AdminApplicationsPage = () => {
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${statusFilter === s
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
                   }`}
               >
                 {s === "ALL" ? "All" : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -243,8 +242,8 @@ const AdminApplicationsPage = () => {
                     key={p}
                     onClick={() => setPage(p)}
                     className={`w-9 h-9 rounded-xl font-bold text-sm transition-all ${page === p
-                        ? "bg-slate-900 text-white"
-                        : "border border-slate-200 text-slate-600 hover:bg-white"
+                      ? "bg-slate-900 text-white"
+                      : "border border-slate-200 text-slate-600 hover:bg-white"
                       }`}
                   >
                     {p}
