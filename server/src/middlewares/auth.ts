@@ -1,17 +1,14 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../utils/prisma";
+import type { User } from "@prisma/client";
 
 interface CustomJwtPayload {
   id: number
 }
 
-
 export interface AuthRequest extends Request {
-  user: {
-    id: number;
-    role: string;
-  }
+  user: User  // ✅ use the full Prisma User type instead of custom object
 }
 
 export const protect = async (
@@ -46,8 +43,6 @@ export const protect = async (
     } else {
       return res.status(401).json({ message: "Not authorized, no token" })
     }
-
-
   } catch (error) {
     return res.status(401).json({ message: "Token invalid" })
   }
