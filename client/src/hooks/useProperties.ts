@@ -15,6 +15,16 @@ export interface UsePropertiesOptions {
     listingType?: string;
     minPrice?: number;
     maxPrice?: number;
+    minBedrooms?: number;
+    maxBedrooms?: number;
+    minBathrooms?: number;
+    maxBathrooms?: number;
+    minArea?: number;
+    maxArea?: number;
+    minYearBuilt?: number;
+    maxYearBuilt?: number;
+    minFloors?: number;
+    maxFloors?: number;
   };
 }
 
