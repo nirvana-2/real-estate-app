@@ -99,3 +99,13 @@ real-estate-app/
 
 ## 📝 License
 This project is licensed under the MIT License.
+
+## 🌐 Live Demo
+**URL:** https://hamronepali-real-estate.vercel.app
+
+### Demo Credentials
+| Role     | Email                        | Password    |
+|----------|------------------------------|-------------|
+| Admin    | admin@hamrorealestate.com    | password123 |
+| Landlord | rajesh.sharma@gmail.com      | password123 |
+| Tenant   | priya.gurung@gmail.com       | password123 |
