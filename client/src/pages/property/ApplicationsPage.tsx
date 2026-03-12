@@ -109,7 +109,7 @@ const ApplicationsPage = () => {
                     <button
                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold text-xs"
+                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold text-xs cursor-pointer disabled:cursor-not-allowed"
                     >
                         Previous
                     </button>
@@ -118,7 +118,7 @@ const ApplicationsPage = () => {
                             <button
                                 key={i}
                                 onClick={() => setPage(i + 1)}
-                                className={`w-8 h-8 rounded-xl font-bold transition-all text-xs ${page === i + 1
+                                className={`w-8 h-8 rounded-xl font-bold transition-all text-xs cursor-pointer ${page === i + 1
                                     ? "bg-[#e51013] text-white shadow-lg shadow-red-500/20"
                                     : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
                                     }`}
@@ -130,7 +130,7 @@ const ApplicationsPage = () => {
                     <button
                         onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                         disabled={page === pagination.totalPages}
-                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold text-xs"
+                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold text-xs cursor-pointer disabled:cursor-not-allowed"
                     >
                         Next
                     </button>

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useProperties } from '../../hooks/useProperties';
 import { Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 import { PublicHero } from '../../components/layout/PublicHero';
@@ -6,12 +7,18 @@ import { PropertyCard } from '../../components/property/PropertyCard';
 export default function NewHomesPage() {
     const { properties, loading } = useProperties({
         page: 1,
-        limit: 8
+        limit: 8,
     });
 
+    const listingsRef = useRef<HTMLElement>(null);
     const newProperties = properties;
 
-    const HERO_IMAGE = "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&q=80&w=1600";
+    const HERO_IMAGE =
+        'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&q=80&w=1600';
+
+    const handleViewAllListings = () => {
+        listingsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
         <div className="pb-20">
@@ -21,14 +28,17 @@ export default function NewHomesPage() {
                 image={HERO_IMAGE}
             >
                 <div className="mt-8">
-                    <button className="btn-accent px-8 py-4 rounded-2xl flex items-center gap-2">
+                    <button
+                        className="btn-accent px-8 py-4 rounded-2xl flex items-center gap-2"
+                        onClick={handleViewAllListings} // Add onClick handler
+                    >
                         View All Recent Listings
                         <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
             </PublicHero>
 
-            <section className="container-page py-16">
+            <section ref={listingsRef} className="container-page py-16">
                 <div className="flex items-center gap-3 mb-10">
                     <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
                         <Sparkles className="w-6 h-6" />
@@ -45,7 +55,7 @@ export default function NewHomesPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {newProperties.map(p => (
+                        {newProperties.map((p) => (
                             <PropertyCard key={p.id} p={p} />
                         ))}
                     </div>

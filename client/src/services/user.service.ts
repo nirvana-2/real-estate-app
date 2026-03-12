@@ -25,6 +25,22 @@ export const updateAgentProfile = async (data: AgentProfilePayload) => {
 };
 
 export const getUserProfile = async () => {
-    const response = await api.get<currentUser>("/user/profile");
+    const response = await api.get<currentUser>("/users/profile");
+    return response.data;
+};
+
+// --- ADMIN METHODS ---
+export const getAllUsersAdmin = async () => {
+    const response = await api.get<{ user: currentUser[] }>("/admin/users");
+    return response.data;
+};
+
+export const updateUserAdmin = async (id: number, data: Partial<currentUser>) => {
+    const response = await api.put<{ user: currentUser }>(`/admin/user/${id}`, data);
+    return response.data;
+};
+
+export const deleteUserAdmin = async (id: number) => {
+    const response = await api.delete<{ message: string }>(`/admin/user/${id}`);
     return response.data;
 };

@@ -7,8 +7,8 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { useAuth } from "../../hooks/useAuth";
 
 const formatMoney = (n: number) => {
-    if (!Number.isFinite(n)) return "$0";
-    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+    if (!Number.isFinite(n)) return "Rs. 0";
+    return "Rs. " + new Intl.NumberFormat("en-NP").format(n);
 };
 
 export const PropertyCard: React.FC<{ p: Property }> = ({ p }) => {

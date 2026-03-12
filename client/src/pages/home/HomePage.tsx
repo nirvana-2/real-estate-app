@@ -14,12 +14,8 @@ const HERO_IMAGE =
   "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1600";
 
 function formatMoney(n: number) {
-  if (!Number.isFinite(n)) return "$0";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
+  if (!Number.isFinite(n)) return "Rs. 0";
+  return "Rs. " + new Intl.NumberFormat("en-NP").format(n);
 }
 
 export default function HomePage() {
@@ -171,17 +167,36 @@ export default function HomePage() {
 
                     <div className="md:col-span-6 lg:col-span-4">
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                        Max price ({formatMoney(maxPrice)})
+                        Price Range
                       </label>
-                      <input
-                        className="mt-3 w-full accent-[#e51013]"
-                        type="range"
-                        min={activeTab === "RENT" ? 200 : 10000}
-                        max={activeTab === "RENT" ? 10000 : 5000000}
-                        step={activeTab === "RENT" ? 50 : 5000}
-                        value={maxPrice}
+                      <select
+                        className="select mt-1 w-full"
                         onChange={(e) => setMaxPrice(Number(e.target.value))}
-                      />
+                        value={maxPrice}
+                      >
+                        <option value={99999999}>Any Price</option>
+                        {activeTab === "RENT" ? (
+                          <>
+                            <option value={10000}>Under Rs. 10,000</option>
+                            <option value={25000}>Rs. 10,000 – Rs. 25,000</option>
+                            <option value={50000}>Rs. 25,000 – Rs. 50,000</option>
+                            <option value={100000}>Rs. 50,000 – Rs. 1 Lakh</option>
+                            <option value={500000}>Rs. 1 Lakh – Rs. 5 Lakh</option>
+                            <option value={1000000}>Rs. 5 Lakh – Rs. 10 Lakh</option>
+                            <option value={99999999}>Above Rs. 10 Lakh</option>
+                          </>
+                        ) : (
+                          <>
+                            <option value={2500000}>Under Rs. 25 Lakh</option>
+                            <option value={5000000}>Rs. 25 Lakh – Rs. 50 Lakh</option>
+                            <option value={10000000}>Rs. 50 Lakh – Rs. 1 Crore</option>
+                            <option value={30000000}>Rs. 1 Crore – Rs. 3 Crore</option>
+                            <option value={50000000}>Rs. 3 Crore – Rs. 5 Crore</option>
+                            <option value={100000000}>Rs. 5 Crore – Rs. 10 Crore</option>
+                            <option value={99999999}>Above Rs. 10 Crore</option>
+                          </>
+                        )}
+                      </select>
                     </div>
                   </div>
 
@@ -343,7 +358,7 @@ export default function HomePage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold"
+                    className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold cursor-pointer disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -352,7 +367,7 @@ export default function HomePage() {
                       <button
                         key={i}
                         onClick={() => setPage(i + 1)}
-                        className={`w-10 h-10 rounded-xl font-bold transition-all ${page === i + 1
+                        className={`w-10 h-10 rounded-xl font-bold transition-all cursor-pointer ${page === i + 1
                           ? "bg-[#e51013] text-white shadow-lg shadow-red-500/20"
                           : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
                           }`}
@@ -364,7 +379,7 @@ export default function HomePage() {
                   <button
                     onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                     disabled={page === pagination.totalPages}
-                    className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold"
+                    className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-all font-bold cursor-pointer disabled:cursor-not-allowed"
                   >
                     Next
                   </button>

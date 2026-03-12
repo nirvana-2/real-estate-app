@@ -18,6 +18,7 @@ import paymentRoutes from "./routes/payment.route";
 import adminRoutes from "./routes/admin.route";
 import authRoutes from "./routes/auth.route";
 import chatRoutes from "./routes/chat.route";
+import agentRoutes from "./routes/agent.route";
 import { createServer } from "http";
 import { initSocket } from "./socket/socket";
 
@@ -58,6 +59,7 @@ app.use("/payments", paymentRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/chats", chatRoutes);
+app.use("/api/agents", agentRoutes);
 
 // Health check
 app.get("/", (_req, res: any) => {

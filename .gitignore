@@ -1,0 +1,48 @@
+# --- Top-Level Protections ---
+node_modules/
+**/node_modules/
+
+# --- Environment & Secrets (High Priority) ---
+# Protects PostgreSQL credentials and API keys across all folders
+.env
+**/.env
+**/.env.local
+**/.env.*.local
+*.env
+.envrc
+
+# --- Build & Compilations ---
+dist/
+**/dist/
+build/
+**/build/
+.next/
+**/ .next/
+out/
+**/out/
+
+# --- Database Specific ---
+# Ignore Prisma generated clients if custom paths are used
+**/generated/
+# Ignore local SQLite files if used for development
+*.db
+*.db-journal
+
+# --- Logs & Debugging ---
+logs
+*.log
+**/logs
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# --- IDE & System ---
+.vscode/
+**/.vscode/
+!.vscode/extensions.json
+.idea/
+**/.idea/
+.DS_Store
+**/.DS_Store
+Thumbs.db

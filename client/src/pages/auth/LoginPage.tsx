@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Lock, Mail, Home, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
@@ -6,7 +6,7 @@ import axios from "axios";
 import type { Role } from "../../auth-types/auth.types";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,6 +16,25 @@ const LoginPage = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ✅ Redirect already logged-in users away from login page
+  useEffect(() => {
+    if (!loading && user) {
+      switch (user.role as Role) {
+        case "ADMIN":
+          navigate("/admin/applications", { replace: true });
+          break;
+        case "LANDLORD":
+          navigate("/landlord/dashboard", { replace: true });
+          break;
+        case "TENANT":
+          navigate("/", { replace: true });
+          break;
+        default:
+          navigate("/", { replace: true });
+      }
+    }
+  }, [user, loading]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -38,16 +57,16 @@ const LoginPage = () => {
       } else {
         switch (user.role as Role) {
           case "ADMIN":
-            navigate("/admin/applications");
+            navigate("/admin/applications", { replace: true });
             break;
           case "LANDLORD":
-            navigate("/landlord/dashboard");
+            navigate("/landlord/dashboard", { replace: true });
             break;
           case "TENANT":
-            navigate("/");
+            navigate("/", { replace: true });
             break;
           default:
-            navigate("/");
+            navigate("/", { replace: true });
         }
       }
     } catch (err: unknown) {
@@ -62,6 +81,9 @@ const LoginPage = () => {
       setIsSubmitting(false);
     }
   };
+
+  // ✅ Show nothing while checking auth to prevent flash of login form
+  if (loading) return null;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-white">

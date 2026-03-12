@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Send, X, MessageSquare, Loader2 } from "lucide-react";
-import socket from "../../services/socket";
+import socket from "../../services/socket.service";
 import { api } from "../../api/axios";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -134,11 +134,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               className={`flex ${msg.senderId === user?.id ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[80%] p-3 rounded-2xl text-sm break-words overflow-hidden ${
-                  msg.senderId === user?.id
+                className={`max-w-[80%] p-3 rounded-2xl text-sm break-words overflow-hidden ${msg.senderId === user?.id
                     ? "bg-[#e51013] text-white rounded-tr-none"
                     : "bg-white text-slate-700 shadow-sm border border-slate-100 rounded-tl-none"
-                }`}
+                  }`}
               >
                 <p className="break-words">{msg.content}</p>
                 <span className="text-[9px] opacity-70 mt-1 block">

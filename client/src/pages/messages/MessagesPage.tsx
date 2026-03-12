@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../api/axios";
-import socket from "../../services/socket";
+import socket from "../../services/socket.service";
 import {
   MessageSquare,
   Send,
@@ -110,7 +110,7 @@ export default function MessagesPage() {
     if (!(roomId in messagesByRoom)) {
       fetchMessages();
     } else {
-      api.patch(`/chats/${propertyId}/${receiverId}/read`).catch(() => {});
+      api.patch(`/chats/${propertyId}/${receiverId}/read`).catch(() => { });
       setConversations((prev) =>
         prev.map((c) =>
           c.propertyId === propertyId && c.otherUser.id === receiverId
@@ -127,10 +127,10 @@ export default function MessagesPage() {
 
   const currentRoomId = selectedConversation
     ? getRoomId(
-        selectedConversation.propertyId,
-        senderId,
-        selectedConversation.otherUser.id
-      )
+      selectedConversation.propertyId,
+      senderId,
+      selectedConversation.otherUser.id
+    )
     : null;
   const currentMessages = currentRoomId ? (messagesByRoom[currentRoomId] ?? []) : [];
   const isLoadingMessages = currentRoomId ? (messagesLoading[currentRoomId] ?? false) : false;
@@ -207,14 +207,14 @@ export default function MessagesPage() {
           return prev.map((c) =>
             `${c.propertyId}-${c.otherUser.id}` === convKey
               ? {
-                  ...c,
-                  lastMessage: msg.content,
-                  lastMessageAt: msg.createdAt,
-                  unreadCount:
-                    msg.receiverId === user?.id && !isViewingThisConversation
-                      ? c.unreadCount + 1
-                      : c.unreadCount,
-                }
+                ...c,
+                lastMessage: msg.content,
+                lastMessageAt: msg.createdAt,
+                unreadCount:
+                  msg.receiverId === user?.id && !isViewingThisConversation
+                    ? c.unreadCount + 1
+                    : c.unreadCount,
+              }
               : c
           );
         }
@@ -246,9 +246,8 @@ export default function MessagesPage() {
           <div className="flex flex-col md:flex-row min-h-[500px]">
             {/* Conversations list */}
             <div
-              className={`md:w-80 border-b md:border-b-0 md:border-r border-slate-200 bg-white ${
-                selectedConversation ? "hidden md:block" : ""
-              }`}
+              className={`md:w-80 border-b md:border-b-0 md:border-r border-slate-200 bg-white ${selectedConversation ? "hidden md:block" : ""
+                }`}
             >
               {loading ? (
                 <div className="p-8 flex items-center justify-center">
@@ -270,12 +269,11 @@ export default function MessagesPage() {
                     <button
                       key={`${conv.propertyId}-${conv.otherUser.id}`}
                       onClick={() => setSelectedConversation(conv)}
-                      className={`w-full p-4 text-left hover:bg-slate-50 transition-colors flex items-start gap-3 ${
-                        selectedConversation?.propertyId === conv.propertyId &&
-                        selectedConversation?.otherUser.id === conv.otherUser.id
+                      className={`w-full p-4 text-left hover:bg-slate-50 transition-colors flex items-start gap-3 ${selectedConversation?.propertyId === conv.propertyId &&
+                          selectedConversation?.otherUser.id === conv.otherUser.id
                           ? "bg-red-50 border-l-4 border-[#e51013]"
                           : ""
-                      }`}
+                        }`}
                     >
                       <div className="w-10 h-10 rounded-full bg-[#e51013]/10 text-[#e51013] flex items-center justify-center font-bold flex-shrink-0">
                         {getDisplayName(conv).charAt(0)}
@@ -355,16 +353,14 @@ export default function MessagesPage() {
                       currentMessages.map((msg) => (
                         <div
                           key={msg.id}
-                          className={`flex ${
-                            msg.senderId === user.id ? "justify-end" : "justify-start"
-                          }`}
+                          className={`flex ${msg.senderId === user.id ? "justify-end" : "justify-start"
+                            }`}
                         >
                           <div
-                            className={`max-w-[80%] p-3 rounded-2xl text-sm break-words overflow-hidden ${
-                              msg.senderId === user.id
+                            className={`max-w-[80%] p-3 rounded-2xl text-sm break-words overflow-hidden ${msg.senderId === user.id
                                 ? "bg-[#e51013] text-white rounded-tr-none"
                                 : "bg-white text-slate-700 shadow-sm border border-slate-100 rounded-tl-none"
-                            }`}
+                              }`}
                           >
                             <p className="break-words">{msg.content}</p>
                             <span className="text-[9px] opacity-70 mt-1 block">
