@@ -5,13 +5,19 @@ import { PrismaClient } from "../utils/prisma";
 
 export const initSocket = (server: HttpServer) => {
     const io = new Server(server, {
+        // ✅ Replace with this
         cors: {
-            origin: [
-                "http://localhost:5173",
-                "http://localhost:5174",
-                process.env.CLIENT_URL,
-                /\.vercel\.app$/,
-            ].filter(Boolean) as (string | RegExp)[],
+            origin: (origin, callback) => {
+                if (
+                    !origin ||
+                    origin.includes('localhost') ||
+                    origin.includes('vercel.app') ||
+                    origin === process.env.CLIENT_URL
+                ) {
+                    return callback(null, true);
+                }
+                callback(new Error('Not allowed by CORS'));
+            },
             methods: ["GET", "POST"],
             credentials: true,
         },
