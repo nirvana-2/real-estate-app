@@ -3,11 +3,15 @@ import jwt from "jsonwebtoken";
 import prisma from "../utils/prisma";
 
 interface CustomJwtPayload {
-    id: number
-  }
+  id: number
+}
+
 
 export interface AuthRequest extends Request {
-  user?: any
+  user: {
+    id: number;
+    role: string;
+  }
 }
 
 export const protect = async (
@@ -16,7 +20,7 @@ export const protect = async (
   next: NextFunction
 ) => {
   try {
-    let token:string|undefined
+    let token: string | undefined
 
     if (
       req.headers.authorization &&
